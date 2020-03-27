@@ -1,0 +1,56 @@
+#include<stdio.h>
+int n, fc=0, sc=0, mc=0;
+int quantum;
+struct project{
+	int id;
+	int arrival_time;
+	int burst_time;
+	int cmpt;
+	int rburst_time;
+}f[20], s[20], m[20];
+
+void input(){
+	char choice,y;
+	int i, t;
+	printf("Enter total no of queries: "); scanf("%d", &n);
+	if(n==0) { printf("\n No queries...Please type again \n");
+	input(); }
+	else{
+		printf("\nEnter the Time Quantum"); scanf("%d", &quantum);
+		printf("\nEnter 'f' for faculty and 's' for student\n");
+		for(i=0; i<n; i++){
+			scanf("%c",&y);
+			printf("\nType ('f'/'s'): "); scanf("%c", &choice);
+			if(choice=='f'){
+				printf("For process %d for teacher",i);
+				printf("Arrival Time: "); scanf("%d", &t);
+				f[fc].id=i;
+				if(t<1000 || t>1200){
+					printf("\nPlease Re-Enter time\n");
+					input();
+				}
+				else{f[fc].arrival_time= t-1000;}
+				printf("Burst Time: "); scanf("%d", &f[fc].burst_time);	 f[fc].rburst_time= f[fc].burst_time; 
+				fc++;
+			} else if(choice=='s'){
+				printf("Process %d of student ",i);
+				printf("Arrival Time: "); scanf("%d", &t);
+				s[sc].id=i; 
+				if(t<1000 || t>1200){
+					printf("\nEnter Correct time\n");
+					input();
+				}
+				else {s[sc].arrival_time= t-1000; }
+				printf("Burst Time: "); scanf("%d", &s[sc].burst_time);	 s[sc].rburst_time= s[sc].burst_time;
+				sc++;
+			}
+		}
+	}
+}
+
+
+ main(){
+ 	printf("***************Please enter Query arrival time in ascending order**************\n\n ");
+	input();
+	}
+}
