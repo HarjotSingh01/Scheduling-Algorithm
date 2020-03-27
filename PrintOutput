@@ -1,0 +1,116 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+int n, fc=0, sc=0, mc=0;
+int quantum;
+struct project{
+	int id;
+	int arrival_time;
+	int burst_time;
+	int cmpt;
+	int rburst_time;
+}f[20], s[20], m[20];
+
+void roundRobin(){
+	int time= m[0].arrival_time, strike=0, cc=0, i, rc;
+	while(time!=120 && cc!=mc){
+		for(i=0; i<=strike; i++){
+			if(m[i].rburst_time > quantum){
+				time += quantum;
+				m[i].rburst_time -= quantum;
+			}
+			else if(m[i].rburst_time <=quantum && m[i].rburst_time !=0){
+				time += m[i].rburst_time;
+				m[i].rburst_time =0;
+				m[i].cmpt = time;
+				cc++;
+			}
+			else;
+		}
+		int start = strike+1;
+		for(rc= start; rc<mc; rc++){
+			if(m[rc].arrival_time <= time){
+				strike++;
+			}
+		}
+	}	
+}
+
+void input(){
+	char choice,y;
+	int i, t;
+	printf("Enter total no of queries: "); scanf("%d", &n);
+	if(n==0) { printf("\n No queries...Please type again \n");
+	input(); }
+	else{
+		printf("\nEnter the Time Quantum"); scanf("%d", &quantum);
+		printf("\nEnter 'f' for faculty and 's' for student\n");
+		for(i=0; i<n; i++){
+			scanf("%c",&y);
+			printf("\nType ('f'/'s'): "); scanf("%c", &choice);
+			if(choice=='f'){
+				printf("For process %d for teacher",i);
+				printf("Arrival Time: "); scanf("%d", &t);
+				f[fc].id=i;
+				if(t<1000 || t>1200){
+					printf("\nPlease Re-Enter time\n");
+					input();
+				}
+				else{f[fc].arrival_time= t-1000;}
+				printf("Burst Time: "); scanf("%d", &f[fc].burst_time);	 f[fc].rburst_time= f[fc].burst_time; 
+				fc++;
+			} else if(choice=='s'){
+				printf("Process %d of student ",i);
+				printf("Arrival Time: "); scanf("%d", &t);
+				s[sc].id=i; 
+				if(t<1000 || t>1200){
+					printf("\nEnter Correct time\n");
+					input();
+				}
+				else {s[sc].arrival_time= t-1000; }
+				printf("Burst Time: "); scanf("%d", &s[sc].burst_time);	 s[sc].rburst_time= s[sc].burst_time;
+				sc++;
+			}
+		}
+	}
+}
+
+int output(){
+	char c,d;
+	int i=0, total=0, sum=0; 
+	double avg;
+	printf("\n Gannt Chart for the Execution\n");
+	printf("\nProcess ID\tArrival Time\tBurst Time\tCompletion Time\tTurn Around Time\tWaiting Time");
+	for(i; i<mc; i++){
+		printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t\t%d",
+		m[i].id, (m[i].arrival_time+1000), m[i].burst_time, (m[i].cmpt+1000), (m[i].cmpt-m[i].arrival_time), ((m[i].cmpt-m[i].arrival_time)- m[i].burst_time));
+		total= m[i].cmpt;
+		sum+= (m[i].cmpt-m[i].arrival_time);
+	}
+	avg = sum/mc;
+	printf("\n\nTotal time Spent for all queries: %d", total);
+	printf("\nAverage query time: %lf", avg);
+	printf("\n\n\n***********************************Execution Complete***************************");
+	printf("\n\n\n Press 'y'' for executing again else ''n' to quit the process\n\n\n");
+	scanf("%c",&d);
+	scanf("%c",&c);
+	if(c=='y')
+	{
+		system("cls");
+		return 1;
+	}
+	else 
+	{
+		return 0;
+		system("exit");
+	}
+}
+ main(){
+ 	int j=1;
+ 	while(j==1){
+ 	printf("***************Please enter Query arrival time in ascending order**************\n\n ");
+	input();
+	roundRobin();
+	j=output();
+	}
+}
